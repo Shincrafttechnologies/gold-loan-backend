@@ -8,7 +8,6 @@ const seedBillSettings = require('./seeders/billSettingSeeder');
 const seedTriggers = require('./seeders/triggerSeeder');
 
 const PORT = process.env.PORT || 5000;
-console.log("🚀 CI/CD Test: Deployment Successful!");
 
 const start = async () => {
     try {
