@@ -27,3 +27,4 @@ const start = async () => {
 };
 
 start();
+console.log("🚀 CI/CD Test: Deployment Successful!");
