@@ -19,6 +19,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/Gold-loan-site-testing
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main
             npm install --production
             pm2 restart gold-loan-backend
