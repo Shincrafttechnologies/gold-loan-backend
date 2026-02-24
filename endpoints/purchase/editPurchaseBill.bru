@@ -1,0 +1,43 @@
+meta {
+  name: editPurchaseBill
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/purchase/edit/589624
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNzM2MDgxLCJleHAiOjE3NzE3MzcyODF9.YQUYAEKx6Ni1YZv2wc3tY4oo0d55MNhmrNhxwBE9lKg
+}
+
+body:json {
+  {
+    customer_name: 'Test Customer',
+    purchase_date: '2026-02-13T00:00:00.000Z',
+    seal: 'ARC',
+    grade: '24K',
+    loan_reference: '',
+    value_per_gram: 10000,
+    profit: 0,
+    total_purchase_amt: 80000,
+    material_type: 'Gold',
+    material_list: [ { name: 'Chain', count: 1, weight_per_item: '8g' } ],
+    weight_in_grams: 8,
+    secure_location: 'Personal',
+    note: '',
+    status: 'In Stock',
+    sold_to: '',
+    sales_amount: 0,
+    purchase_id: 589624,
+    type: 'newPurchaseBill'
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

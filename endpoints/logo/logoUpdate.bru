@@ -1,0 +1,24 @@
+meta {
+  name: logoUpdate
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{baseUrl}}/logo/update_logo
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxODY1MjQzLCJleHAiOjE3NzE4NjY0NDN9.tK_Ygz7k6-Q0mYXUr5UXluKHAq115-j9lYA0JAV-1M4
+}
+
+body:multipart-form {
+  logo_image: @file(C:\Users\Asus\Downloads\media_1767431178466.webp) @contentType(file)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

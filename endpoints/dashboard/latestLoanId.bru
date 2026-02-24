@@ -1,0 +1,30 @@
+meta {
+  name: latestLoanId
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/dashboard/latest-loan-ids
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNTkwOTQ5LCJleHAiOjE3NzE1OTIxNDl9.6LJMfGwj4LohOjAJCNYaYztkrx-YF5L7NM1za63ZQOg
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+response {
+  {
+    "success": true,
+    "data": {
+      "last_running_id": "0004",
+      "last_personal_id": "O0017"
+    }
+  }
+}

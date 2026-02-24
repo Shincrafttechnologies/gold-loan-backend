@@ -1,0 +1,25 @@
+meta {
+  name: getCustomer
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/customer/all?page=1&limit=20
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 1
+  limit: 20
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNzUzNjQzLCJleHAiOjE3NzE3NTQ4NDN9.QHP4G5_SRvcB-xfX3egV13U1GDuXWGeRV5MOcHBRjb0
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

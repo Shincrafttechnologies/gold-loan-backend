@@ -1,0 +1,36 @@
+meta {
+  name: updateTriggerSettings
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/notification/settings/update
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxMDYyNDQ0LCJleHAiOjE3NzEwNjM2NDR9.rEkBoK8OjuVmFVP8LlemT_CEoeKieC7TW2MHuR-mbKw
+}
+
+body:json {
+  {
+      "alert": {
+          "trigger_days": 4,
+          "message_format": "Hi {NAME}, gentle reminder that your loan {LOAN_ID} is due in {DAYS} days."
+      },
+      "warning": {
+          "trigger_days": 4,
+          "message_format": "Urgent! {NAME}, your loan {LOAN_ID} was due {DAYS} days ago. Please pay immediately."
+      },
+      "NewLoan": {
+          "message_format": "New loan has been created in the name {NAME} loan id {LOANID}."
+      }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

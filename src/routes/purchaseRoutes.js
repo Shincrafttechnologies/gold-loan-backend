@@ -1,0 +1,20 @@
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const purchaseBillController = require('../controllers/newPurchaseBillController');
+const editPurchaseBillController = require('../controllers/editPurchaseBillController');
+const deletePurchaseBillController = require('../controllers/deletePurchaseBill');
+const getPurchaseBillController = require('../controllers/getPurchaseBillController');
+const exportPurchaseController = require('../controllers/exportPurchaseController');
+const importPurchaseController = require('../controllers/importPurchaseController');
+const authenticateAdmin = require('../middleware/authMiddleware');
+const excelUpload = multer({ storage: multer.memoryStorage() });
+
+router.get('/import-progress/:importId', authenticateAdmin, importPurchaseController.getImportProgress);
+router.post('/add', authenticateAdmin, purchaseBillController.createPurchaseBill);
+router.put('/edit/:purchase_id', authenticateAdmin, editPurchaseBillController.editPurchaseBill);
+router.delete('/delete/:purchase_id', authenticateAdmin, deletePurchaseBillController.deletePurchaseBill);
+router.get('/all', authenticateAdmin, getPurchaseBillController.getAllPurchaseBills);
+router.get('/export-excel', authenticateAdmin, exportPurchaseController.downloadPurchaseExcel);
+router.post('/import-excel', authenticateAdmin, excelUpload.single('file'), importPurchaseController.importPurchaseExcel);
+module.exports = router;

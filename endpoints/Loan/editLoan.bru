@@ -1,0 +1,29 @@
+meta {
+  name: editLoan
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/loan/edit/0004
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNTcyNjM0LCJleHAiOjE3NzE1NzM4MzR9.R7T61B7xwWB3dq9nE1qLBH2qDZdSTpl-7Z7PKhzCvLw
+}
+
+body:multipart-form {
+  remark: updated with new photo @contentType(Text)
+  pending_amount: 100
+  secure_location: Bank
+  partial_payment: [{"date":"2026-02-03","interest":2000,"principal":5000},{"date":"2026-03-03","interest":2000,"principal":3000}] @contentType(Text)
+  status: Closed
+  closing_amount: 67000
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

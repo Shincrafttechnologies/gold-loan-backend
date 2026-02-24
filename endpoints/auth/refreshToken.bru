@@ -1,0 +1,22 @@
+meta {
+  name: refreshToken
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/admin/refresh-token
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcwMjAyOTk2LCJleHAiOjE3NzA4MDc3OTZ9.xr-Bz_E3edBBKtSmZIL8HEUTSpsA0Jsai72sCQ-ZQ7Y"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

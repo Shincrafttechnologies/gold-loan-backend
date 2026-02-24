@@ -1,0 +1,32 @@
+meta {
+  name: createCustomer
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/customer/add
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNzU0Mjc0LCJleHAiOjE3NzE3NTU0NzR9.hYE2mqRUNITAcIv0WL3Qp4p7jlpQIdcTyLx2dZlm-Vk
+}
+
+body:multipart-form {
+  name: Rajesh Kumar
+  phone_no: 9087085515
+  relation_type: S/O
+  street: D 65, 2nd cross
+  area: Anna nagar
+  state: Puducherry
+  pincode: 605014
+  item_photo: @file(C:\Users\Asus\Downloads\media_1767083515221.webp)
+  relative_name: Kumar
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

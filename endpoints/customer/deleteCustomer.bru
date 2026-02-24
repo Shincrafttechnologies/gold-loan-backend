@@ -1,0 +1,20 @@
+meta {
+  name: deleteCustomer
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{baseUrl}}/customer/delete/364751
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNDIxODQzLCJleHAiOjE3NzE0MjMwNDN9.WxPkHu4yCdEEZlEeW_pdgv6jC_dBgm3YgzfuwdMAjB8
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

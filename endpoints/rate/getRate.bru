@@ -1,0 +1,20 @@
+meta {
+  name: getRate
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/rate/getRate
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcwMDI0NzM4LCJleHAiOjE3NzAwMjU5Mzh9.l_bcQkQeecPOWkoAQPq96ASRHopcx56-qW71XY9Lj6I
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

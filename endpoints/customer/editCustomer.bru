@@ -1,0 +1,40 @@
+meta {
+  name: editCustomer
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/customer/edit/828346
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxMDYzNjE3LCJleHAiOjE3NzEwNjQ4MTd9.TM42qSFotmCWSfozRIyDHACSKsv_dXalmOWs4Kw4UAA
+}
+
+body:json {
+  {
+    "name": "Apple",
+    "phone_no": "9988776655",
+    "area": "T. Nagar"
+  }
+}
+
+body:multipart-form {
+  item_photo: @file(C:\Users\Asus\Downloads\logo.jpeg)
+  name: customer1
+  relation_type: S/O
+  relative_name: Mother
+  phone_no: 6985473200
+  street: door
+  area: area
+  state: state
+  pincode: 605398
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

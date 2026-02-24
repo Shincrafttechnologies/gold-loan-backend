@@ -1,0 +1,24 @@
+meta {
+  name: imortCustomerThroughExcel
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/customer/import
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcwODIyNTI4LCJleHAiOjE3NzA4MjM3Mjh9.rKB424L9VlZ_0LA2BUS2s3qi3djlWs3GiCwfCCFbCnc
+}
+
+body:multipart-form {
+  file: @file(C:\Users\Asus\Downloads\Customers_List.xlsx)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

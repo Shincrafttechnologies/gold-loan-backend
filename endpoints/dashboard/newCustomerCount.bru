@@ -1,0 +1,25 @@
+meta {
+  name: newCustomerCount
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/dashboard/new-customer-count?start_date=2026-02-01&end_date=2026-02-23
+  body: none
+  auth: bearer
+}
+
+params:query {
+  start_date: 2026-02-01
+  end_date: 2026-02-23
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxODY1MjQzLCJleHAiOjE3NzE4NjY0NDN9.tK_Ygz7k6-Q0mYXUr5UXluKHAq115-j9lYA0JAV-1M4
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,20 @@
+meta {
+  name: getTriggerSettings
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/notification/settings
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNTg5NzMwLCJleHAiOjE3NzE1OTA5MzB9.wtYvbsx6c9EhMMncKtCbcVeafjoGRO8H-RtrQejmY2g
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

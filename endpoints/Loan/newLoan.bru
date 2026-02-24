@@ -1,0 +1,50 @@
+meta {
+  name: newLoan
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/loan/create
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxODY1MjQzLCJleHAiOjE3NzE4NjY0NDN9.tK_Ygz7k6-Q0mYXUr5UXluKHAq115-j9lYA0JAV-1M4
+}
+
+body:multipart-form {
+  customer_id: 297521 @contentType(Text)
+  customer_name: Manibharathi @contentType(Text)
+  phone_no: 9087085515 @contentType(Text)
+  relation_type: S/O @contentType(Text)
+  relative_name: Father Name @contentType(Text)
+  street: Test Street @contentType(Text)
+  area: area name @contentType(Text)
+  material_type: Gold @contentType(Text)
+  total_weight: 150 @contentType(Text)
+  present_value: 60000 @contentType(Text)
+  total_amount: 55000 @contentType(Text)
+  interest: [0.01, 0.02, 0.03] @contentType(Text)
+  bill_type: Running @contentType(Text)
+  secure_location: Locker @contentType(Text)
+  location_details: SBI bank, Pondy @contentType(Text)
+  loan_duration_months: 0 @contentType(Text)
+  loan_duration_days: 8 @contentType(Text)
+  item_photo: @file(C:\Users\Asus\Downloads\media_1767431178466.webp) @contentType(File)
+  material_list: [{"name":"Ring","count":2,"weight_per_item":"4g"},{"name":"bangle","count":1,"weight_per_item":"12g"}] @contentType(Text)
+  remark: Everything is checked properly @contentType(Text)
+  profit_amount: 12000 @contentType(Text)
+  state: puducherry @contentType(Text)
+  pincode: 605014 @contentType(Text)
+  alert_count: 2 @contentType(Text)
+  processing_fee: 150 @contentType(Text)
+  loan_id: 0001 @contentType(Text)
+  value_per_gram: 15000.234 @contentType(Text)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

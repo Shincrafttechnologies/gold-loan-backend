@@ -1,0 +1,41 @@
+meta {
+  name: createPurchaseBill
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/purchase/add
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNTc1MDg4LCJleHAiOjE3NzE1NzYyODh9.ddokezEatEKqTWdlTpxSQ9uPNjohLtdMGhQucr4WgZ0
+}
+
+body:json {
+  {
+    "customer_name": "Ravi",
+    "weight_in_grams": 10,
+    "seal":"NAC",
+    "grade":"22K",
+    "purchase_date":"2026-02-01",
+    "total_purchase_amt": 60000,
+    "secure_location": "Personal",
+    "material_list":[{"name":"Ring","count":2,"weight_per_item":"4g"},{"name":"bangle","count":1,"weight_per_item":"12g"}],
+    "note":"example note",
+    "material_type":"Silver",
+    "value_per_gram":340,
+    "status":"In Stock",
+    "sold_to": "Chennai Jewelers",
+    "sales_amount": 65000,
+    "profit":2000,
+    "sales_date": "2026-02-03" 
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

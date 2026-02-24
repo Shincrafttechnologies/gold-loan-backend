@@ -1,0 +1,26 @@
+meta {
+  name: getLoans
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/loan/all?page=1&limit=200&loan_id=0003
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 1
+  limit: 200
+  loan_id: 0003
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNTcxMTYwLCJleHAiOjE3NzE1NzIzNjB9.g1ZnTST4s1XCBntC_jBk_tFy37Uajh0BW0uwpOyx-I8
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

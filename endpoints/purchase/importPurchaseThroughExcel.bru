@@ -1,0 +1,24 @@
+meta {
+  name: importPurchaseThroughExcel
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/purchase/import-excel
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcwODI5MDMzLCJleHAiOjE3NzA4MzAyMzN9.2F6pTfdHQ4uhYx_UlLsgs2xt4zDVmJUWn_LuosVvfKo
+}
+
+body:multipart-form {
+  file: @file(C:\Users\Asus\Downloads\Purchase_Report_1770828335764.xlsx)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

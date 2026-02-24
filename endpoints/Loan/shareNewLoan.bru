@@ -1,0 +1,26 @@
+meta {
+  name: shareNewLoan
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/loan/generate-whatsapp-link
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxMTU3MzY0LCJleHAiOjE3NzExNTg1NjR9.t9thwC789eR1IZJ4AmPsI7BE55smxmct7SjOO8OoUBw
+}
+
+body:json {
+  {
+    "loan_id":"A0001"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

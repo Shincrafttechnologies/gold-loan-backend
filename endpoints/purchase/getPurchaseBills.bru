@@ -1,0 +1,27 @@
+meta {
+  name: getPurchaseBills
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/purchase/all?sort_order=asc&page=1&limit=5&start_date=2026-02-02
+  body: none
+  auth: bearer
+}
+
+params:query {
+  sort_order: asc
+  page: 1
+  limit: 5
+  start_date: 2026-02-02
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNzM2MDgxLCJleHAiOjE3NzE3MzcyODF9.YQUYAEKx6Ni1YZv2wc3tY4oo0d55MNhmrNhxwBE9lKg
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

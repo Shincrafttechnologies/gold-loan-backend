@@ -1,0 +1,20 @@
+meta {
+  name: loanIdSettings
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/loan/settings/series
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcxNDI0NDE2LCJleHAiOjE3NzE0MjU2MTZ9.QOCdpgKFik7o2srbqFqA7g3Y0CObZjq8fddiqXxcZa0
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

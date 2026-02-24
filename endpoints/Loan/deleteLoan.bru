@@ -1,0 +1,20 @@
+meta {
+  name: deleteLoan
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/loan/delete/A12356
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYW5pLmJoYXJhdGhpLjIzMDNAZ21haWwuY29tIiwiaWF0IjoxNzcwMzcxOTg3LCJleHAiOjE3NzAzNzMxODd9.srcHO5rBhpv1IUGpyLl2DXsz8Eo4cB8w_XvpZBfPn0A
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
