@@ -94,7 +94,12 @@ exports.editLoan = async (req, res) => {
                 { where: { customer_id: loan.customer_id }, transaction: t }
             );
         }
-
+        if (updates.loan_opening_date) {
+            updates.loan_opening_date = new Date(updates.loan_opening_date);
+        }
+        if (updates.loan_closing_date) {
+            updates.loan_closing_date = new Date(updates.loan_closing_date);
+        }
         await loan.update(updates, { transaction: t });
 
         const finalStatus = updates.status || loan.status;
