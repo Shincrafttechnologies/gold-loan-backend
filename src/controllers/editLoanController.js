@@ -34,7 +34,7 @@ exports.editLoan = async (req, res) => {
         }
 
         const currentStatus = loan.status ? loan.status.trim() : '';
-        const newStatus = updates.status ? updates.status.trim() : currentStatus;
+        let newStatus = updates.status ? updates.status.trim() : currentStatus;
         if (newStatus === 'Close') {
             newStatus = 'Closed';
             updates.status = 'Closed'; // Ensure the DB saves the correct ENUM
