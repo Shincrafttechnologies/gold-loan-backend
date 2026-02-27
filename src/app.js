@@ -34,6 +34,10 @@ app.use(sanitizeData);
 app.get('/api/uploads/:filename', (req, res) => {
     const token = req.query.token;
 
+    // 2. If it's not in the URL, grab it from the secure Authorization header
+    if (!token && req.headers.authorization) {
+        token = req.headers.authorization.split(' ')[1]; // Extracts token from "Bearer <token>"
+    }
     if (!token) {
         return res.status(401).send("Access denied. No token provided.");
     }
