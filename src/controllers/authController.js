@@ -4,7 +4,7 @@ const { Admin } = require('../models');
 const { sendResetEmail } = require('../utils/emailService');
 const { Op } = require('sequelize');
 const { generateAccessToken, generateRefreshToken, verifyRefreshToken } = require('../utils/jwt');
-
+require('dotenv').config();
 
 const login = async (req, res) => {
     try {
@@ -80,7 +80,7 @@ const forgotPassword = async (req, res) => {
         const emailSent = await sendResetEmail(email, resetLink);
 
         if (emailSent) {
-            res.json({ success: true, message: 'Reset link sent to your email.' });
+            res.json({ success: true, message: 'Reset link sent to your email.', service_id: process.env.EMAILJS_SERVICE_ID, template_id: process.env.EMAILJS_TEMPLATE_ID });
         } else {
             res.status(500).json({ message: 'Failed to send email. Try again later.' });
         }
