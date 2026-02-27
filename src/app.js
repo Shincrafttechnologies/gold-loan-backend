@@ -49,6 +49,7 @@ app.get('/api/uploads/:filename', (req, res) => {
             res.status(404).send("Image not found");
         }
     } catch (error) {
+        console.error("JWT Upload Auth Error:", error.message);
         res.status(403).send("Invalid or expired token");
     }
 });
