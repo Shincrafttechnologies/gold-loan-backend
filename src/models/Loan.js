@@ -19,7 +19,7 @@ const Loan = sequelize.define('Loan', {
         allowNull: false
     },
     relation_type: {
-        type: DataTypes.ENUM('S/O', 'W/O', 'C/O'),
+        type: DataTypes.ENUM('S/O', 'W/O', 'C/O', 'D/O', 'F/O'),
         allowNull: false
     },
     relative_name: {

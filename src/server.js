@@ -20,6 +20,8 @@ const start = async () => {
         });
         await refreshNotifications();
         sequelize.query("ALTER TYPE \"enum_Customers_relation_type\" ADD VALUE 'F/O';").catch(e => console.log("F/O already exists"));
+        sequelize.query("ALTER TYPE \"enum_Loans_relation_type\" ADD VALUE 'F/O';").catch(e => console.log("F/O already exists in Loans"));
+        sequelize.query("ALTER TYPE \"enum_Loans_relation_type\" ADD VALUE 'D/O';").catch(e => console.log("D/O already exists in Loans"));
         app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     } catch (err) {
         console.error(err);
