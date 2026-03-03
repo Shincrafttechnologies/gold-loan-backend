@@ -10,7 +10,11 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const admin = await Admin.findOne({ where: { email } });
+        const admin = await Admin.findOne({
+            where: {
+                email: { [Op.iLike]: email.trim() }
+            }
+        });
         if (!admin) return res.status(401).json({ message: 'Invalid Credentials' });
 
         const isMatch = await bcrypt.compare(password, admin.password_hash);
@@ -63,7 +67,11 @@ const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
 
-        const admin = await Admin.findOne({ where: { email } });
+        const admin = await Admin.findOne({
+            where: {
+                email: { [Op.iLike]: email.trim() }
+            }
+        });
         if (!admin) {
             return res.status(404).json({ message: 'Email not found' });
         }
