@@ -109,6 +109,26 @@ exports.createLoanBill = async (req, res) => {
         const data = req.body;
         if (!data.loan_id) throw new Error("Loan ID is missing.");
         if (!data.bill_type) throw new Error("Bill Type is missing.");
+        if (!data.customer_id) throw new Error("Customer ID is missing!");
+
+        const requiredCustomerFields = [
+            { key: 'customer_name', label: 'Customer Name' },
+            { key: 'phone_no', label: 'Phone Number' },
+            { key: 'relation_type', label: 'Relation Type' },
+            { key: 'relative_name', label: 'Relative Name' },
+            { key: 'street', label: 'Street Address' },
+            { key: 'area', label: 'Area' },
+            { key: 'state', label: 'State' },
+            { key: 'pincode', label: 'Pincode' }
+        ];
+
+        const missingFields = requiredCustomerFields
+            .filter(f => !data[f.key] || String(data[f.key]).trim() === '')
+            .map(f => f.label);
+
+        if (missingFields.length > 0) {
+            throw new Error(`Please fill out the following required fields: ${missingFields.join(', ')}`);
+        }
 
         const settings = await BillSettings.findOne({ where: { type: data.bill_type } });
         const formatConfig = settings ? settings.current_series : (data.bill_type === 'Running' ? 'A0000' : 'N0000');
