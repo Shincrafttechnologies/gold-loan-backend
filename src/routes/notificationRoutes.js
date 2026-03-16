@@ -10,4 +10,6 @@ router.post('/settings/update', authenticateAdmin, notificationController.update
 
 router.get('/list', authenticateAdmin, notificationController.getNotifications);
 
+router.delete('/:id', authenticateAdmin, notificationController.deleteNotification);
+
 module.exports = router;
