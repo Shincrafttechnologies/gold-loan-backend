@@ -105,11 +105,16 @@ exports.getNewCustomerId = async (req, res) => {
 exports.createLoanBill = async (req, res) => {
     let uploadedFilePath = req.file ? req.file.path : null;
 
+    const t = await sequelize.transaction();
+
     try {
         const data = req.body;
         if (!data.loan_id) throw new Error("Loan ID is missing.");
         if (!data.bill_type) throw new Error("Bill Type is missing.");
         if (!data.customer_id) throw new Error("Customer ID is missing!");
+
+        const loanStatus = data.status === 'Closed' ? 'Closed' : 'Open';
+        const loanClosingDate = loanStatus === 'Closed' ? (data.loan_closing_date || new Date()) : null;
 
         const requiredCustomerFields = [
             { key: 'customer_name', label: 'Customer Name' },
@@ -146,7 +151,14 @@ exports.createLoanBill = async (req, res) => {
 
         const existingLoan = await Loan.findOne({ where: { loan_id: data.loan_id } });
         if (existingLoan) {
-            throw new Error(`Loan ID ${data.loan_id} already exists! It might have been taken by another user just now. Please refresh.`);
+            throw new Error(`Loan ID ${data.loan_id} already exists in the main Loans table!`);
+        }
+
+        if (data.bill_type === 'Running') {
+            const existingRunningBill = await RunningBill.findOne({ where: { loan_id: data.loan_id } });
+            if (existingRunningBill) {
+                throw new Error(`Loan ID ${data.loan_id} has a conflicting 'ghost record' in the RunningBills table. Please use a different ID or clear the orphaned record from the database.`);
+            }
         }
 
         let materialList = [];
@@ -182,7 +194,6 @@ exports.createLoanBill = async (req, res) => {
         }
 
         const sentCustomerId = data.customer_id;
-        if (!sentCustomerId) throw new Error("Customer ID is missing!");
 
         let finalPhotoPath = null;
         if (req.file) {
@@ -204,13 +215,20 @@ exports.createLoanBill = async (req, res) => {
         let customer = await Customer.findOne({ where: { customer_id: sentCustomerId } });
         if (customer) {
             const updateData = {
-                open_loan_cnt: sequelize.literal('open_loan_cnt + 1'),
                 total_loan_cnt: sequelize.literal('total_loan_cnt + 1')
             };
+
+            if (loanStatus === 'Open') {
+                updateData.open_loan_cnt = sequelize.literal('open_loan_cnt + 1');
+            } else {
+                updateData.closed_loan_cnt = sequelize.literal('closed_loan_cnt + 1');
+                updateData.total_closed_loan_amt = sequelize.literal(`total_closed_loan_amt + ${parseFloat(data.total_amount) || 0}`);
+            }
+
             if (finalPhotoPath) {
                 updateData.item_photo_url = finalPhotoPath;
             }
-            await customer.update(updateData);
+            await customer.update(updateData, { transaction: t });
         } else {
             customer = await Customer.create({
                 customer_id: sentCustomerId,
@@ -222,12 +240,12 @@ exports.createLoanBill = async (req, res) => {
                 area: data.area,
                 state: data.state,
                 pincode: data.pincode,
-                open_loan_cnt: 1,
+                open_loan_cnt: loanStatus === 'Open' ? 1 : 0,
                 total_loan_cnt: 1,
-                closed_loan_cnt: 0,
-                total_closed_loan_amt: 0,
+                closed_loan_cnt: loanStatus === 'Closed' ? 1 : 0,
+                total_closed_loan_amt: loanStatus === 'Closed' ? (parseFloat(data.total_amount) || 0) : 0,
                 item_photo_url: finalPhotoPath
-            });
+            }, { transaction: t });
         }
 
         const newLoan = await Loan.create({
@@ -263,12 +281,14 @@ exports.createLoanBill = async (req, res) => {
             location_details: data.location_details,
             loan_duration_months: data.loan_duration_months,
             loan_duration_days: data.loan_duration_days,
+
+            loan_closing_date: loanClosingDate,
             alert_count: parseInt(data.alert_count) || 0,
             remark: data.remark,
-            status: 'Open'
-        });
-        if (data.bill_type === 'Running') {
+            status: loanStatus
+        }, { transaction: t });
 
+        if (data.bill_type === 'Running') {
             const principal = parseFloat(data.total_amount) || 0;
             const durationMonths = parseInt(data.loan_duration_months) || 0;
 
@@ -281,52 +301,57 @@ exports.createLoanBill = async (req, res) => {
                 profit_amount: shadowProfit,
                 prediction_closing_amount: shadowPrediction,
                 loan_id: newLoan.loan_id
-            });
+            }, { transaction: t });
         }
+
         try {
-            const alertTrigger = await Trigger.findOne({ where: { type: 'Alert' } });
+            if (loanStatus === 'Open') {
+                const alertTrigger = await Trigger.findOne({ where: { type: 'Alert' } });
 
-            if (alertTrigger) {
-                const alertThreshold = alertTrigger.trigger_days || 4;
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
+                if (alertTrigger) {
+                    const alertThreshold = alertTrigger.trigger_days || 4;
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
 
-                const openDate = new Date(newLoan.loan_opening_date);
-                const dueDate = new Date(openDate);
-                dueDate.setDate(openDate.getDate() + newLoan.loan_duration_days);
-                dueDate.setHours(0, 0, 0, 0);
+                    const openDate = new Date(newLoan.loan_opening_date);
+                    const dueDate = new Date(openDate);
+                    dueDate.setDate(openDate.getDate() + newLoan.loan_duration_days);
+                    dueDate.setHours(0, 0, 0, 0);
 
-                const diffTime = dueDate - today;
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    const diffTime = dueDate - today;
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                if (diffDays <= alertThreshold && diffDays >= 0) {
+                    if (diffDays <= alertThreshold && diffDays >= 0) {
 
-                    let rawMsg = alertTrigger.message_format;
-                    let finalMsg = rawMsg
-                        .replace(/{NAME}/g, newLoan.customer_name)
-                        .replace(/{LOAN_ID}/g, newLoan.loan_id)
-                        .replace(/{AMOUNT}/g, newLoan.total_amount)
-                        .replace(/{DATE}/g, dueDate.toLocaleDateString())
-                        .replace(/{DAYS}/g, diffDays);
+                        let rawMsg = alertTrigger.message_format;
+                        let finalMsg = rawMsg
+                            .replace(/{NAME}/g, newLoan.customer_name)
+                            .replace(/{LOAN_ID}/g, newLoan.loan_id)
+                            .replace(/{AMOUNT}/g, newLoan.total_amount)
+                            .replace(/{DATE}/g, dueDate.toLocaleDateString())
+                            .replace(/{DAYS}/g, diffDays);
 
-                    const whatsappUrl = `https://wa.me/${newLoan.phone_no}?text=${encodeURIComponent(finalMsg)}`;
+                        const whatsappUrl = `https://wa.me/${newLoan.phone_no}?text=${encodeURIComponent(finalMsg)}`;
 
-                    await Notification.create({
-                        loan_id: newLoan.loan_id,
-                        customer_name: newLoan.customer_name,
-                        phone_no: newLoan.phone_no,
-                        type: 'Alert',
-                        days_diff: diffDays,
-                        message: finalMsg,
-                        whatsapp_link: whatsappUrl,
-                        is_active: true
-                    });
-                    console.log(`Immediate Alert generated for ${newLoan.loan_id} (Due in ${diffDays} days)`);
+                        await Notification.create({
+                            loan_id: newLoan.loan_id,
+                            customer_name: newLoan.customer_name,
+                            phone_no: newLoan.phone_no,
+                            type: 'Alert',
+                            days_diff: diffDays,
+                            message: finalMsg,
+                            whatsapp_link: whatsappUrl,
+                            is_active: true
+                        }, { transaction: t });
+                        console.log(`Immediate Alert generated for ${newLoan.loan_id} (Due in ${diffDays} days)`);
+                    }
                 }
             }
         } catch (notifError) {
             console.error("Failed to create NewLoan notification:", notifError);
         }
+
+        await t.commit();
 
         res.status(201).json({
             success: true,
@@ -336,14 +361,14 @@ exports.createLoanBill = async (req, res) => {
         });
 
     } catch (error) {
+        await t.rollback();
         console.error("Error creating loan:", error);
         if (uploadedFilePath && fs.existsSync(uploadedFilePath)) {
             fs.unlinkSync(uploadedFilePath);
         }
         res.status(500).json({
             success: false,
-            message: "Failed to create loan bill",
-            error: error.message
+            message: error.message || "Failed to create loan bill"
         });
     }
 };
