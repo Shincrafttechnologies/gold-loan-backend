@@ -273,8 +273,8 @@ exports.createLoanBill = async (req, res) => {
             profit_amount: parseFloat(data.profit_amount) || 0,
             pending_amount: parseFloat(data.pending_amount) || 0,
             prediction_closing_amount: parseFloat(data.prediction_closing_amount) || 0,
-            loan_total_months: parseInt(data.loan_total_months) || 0,
-            loan_total_days: parseInt(data.loan_total_days) || 0,
+            loan_total_months: parseInt(data.loan_duration_months) || 0,
+            loan_total_days: parseInt(data.loan_duration_days) || 0,
 
             bill_type: data.bill_type,
             secure_location: data.secure_location,
