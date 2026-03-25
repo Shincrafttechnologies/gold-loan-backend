@@ -16,14 +16,14 @@ exports.deleteCustomer = async (req, res) => {
         const activeLoanCount = await Loan.count({
             where: {
                 customer_id: customer_id,
-                status: 'Active'
+                status: 'Open'
             }
         });
 
         if (activeLoanCount > 0) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot delete customer! They still have ${activeLoanCount} Active loans. Please close them first.`
+                message: `Cannot delete customer! They still have ${activeLoanCount} Open loans. Please close them first.`
             });
         }
 
