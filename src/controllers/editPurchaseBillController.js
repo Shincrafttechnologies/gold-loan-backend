@@ -25,24 +25,24 @@ exports.editPurchaseBill = async (req, res) => {
             try { updates.material_list = JSON.parse(updates.material_list); } catch (e) { }
         }
 
-        const targetStatus = updates.status || bill.status;
+        const finalSalesDate = updates.sales_date !== undefined ? updates.sales_date : bill.sales_date;
+        const finalSoldTo = updates.sold_to !== undefined ? updates.sold_to : bill.sold_to;
+        const finalSalesAmount = updates.sales_amount !== undefined ? parseFloat(updates.sales_amount) : bill.sales_amount;
 
-        if (targetStatus === 'Sold') {
-            const salesAmount = updates.sales_amount !== undefined ? parseFloat(updates.sales_amount) : bill.sales_amount;
-            const soldTo = updates.sold_to || bill.sold_to;
+        if (finalSalesDate && finalSoldTo && finalSalesAmount) {
 
-            if (!salesAmount || !soldTo) {
-                return res.status(400).json({
-                    success: false,
-                    message: "To mark as 'Sold', you must provide 'sales_amount' and 'sold_to'."
-                });
-            }
+            updates.status = 'Sold';
 
-            const purchaseAmount = updates.total_purchase_amt !== undefined ? parseFloat(updates.total_purchase_amt) : bill.total_purchase_amt;
+            const finalPurchaseAmount = updates.total_purchase_amt !== undefined ? parseFloat(updates.total_purchase_amt) : bill.total_purchase_amt;
+            updates.profit = finalSalesAmount - finalPurchaseAmount;
 
-            if (updates.profit === undefined) {
-                updates.profit = salesAmount - purchaseAmount;
-            }
+        } else {
+            updates.status = 'In Stock';
+
+            updates.sales_date = null;
+            updates.sold_to = null;
+            updates.sales_amount = null;
+            updates.profit = null;
         }
 
         await bill.update(updates);
