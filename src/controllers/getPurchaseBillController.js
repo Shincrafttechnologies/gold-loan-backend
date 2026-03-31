@@ -13,6 +13,7 @@ exports.getAllPurchaseBills = async (req, res) => {
             page = 1,
             limit = 10
         } = req.query;
+
         const pageNum = parseInt(page) || 1;
         const limitNum = parseInt(limit) || 10;
         const offset = (pageNum - 1) * limitNum;
@@ -26,6 +27,7 @@ exports.getAllPurchaseBills = async (req, res) => {
         if (purchase_id) {
             whereClause.purchase_id = purchase_id;
         }
+
         if (start_date || end_date) {
             whereClause.purchase_date = {};
 
@@ -37,7 +39,7 @@ exports.getAllPurchaseBills = async (req, res) => {
             }
         }
 
-        const sortByField = sort_by || 'purchase_date';
+        const sortByField = sort_by || 'createdAt';
         const sortDirection = sort_order === 'ASC' ? 'ASC' : 'DESC';
 
         const { count, rows } = await PurchaseBill.findAndCountAll({
