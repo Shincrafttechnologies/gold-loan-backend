@@ -32,7 +32,7 @@ app.use(express.json());
 app.use(sanitizeData);
 
 app.get('/api/uploads/:filename', (req, res) => {
-    const token = req.query.token;
+    let token = req.query.token;
 
     // 2. If it's not in the URL, grab it from the secure Authorization header
     if (!token && req.headers.authorization) {
